@@ -1,0 +1,14 @@
+rules:
+  - id: high_amount
+    description: Flag transactions above the high-value threshold.
+    field: amount
+    operator: greater_than
+    value: 10000
+  - id: risky_country
+    description: Flag transactions initiated from higher-risk countries.
+    field: country
+    operator: in
+    value:
+      - NP
+      - RU
+      - AF

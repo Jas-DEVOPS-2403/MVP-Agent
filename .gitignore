@@ -1,0 +1,8 @@
+# Python Virtual Environment
+.venv/
+venv/
+
+# Common system/build files
+__pycache__/
+*.pyc
+.DS_Store # macOS system file
