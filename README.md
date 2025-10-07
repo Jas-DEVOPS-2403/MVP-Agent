@@ -1,4 +1,4 @@
-🛡️ AI Compliance & Audit Agent: MVP-AGENT
+🛡️ AI Compliance & Audit Agent: MVP-AGENT /br
 🌟 Project Overview: Autonomous AML Compliance
 Financial institutions face massive manual effort and high error rates in monitoring for AML/KYC and trading rule violations.
 
