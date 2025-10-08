@@ -58,13 +58,24 @@ def generate_report(
         summary["top_anomalies"] = []
 
     if "rule_alert" in enriched.columns:
-        alerted = enriched.loc[enriched["rule_alert"], ["txn_id", "amount", "country"]]
+        alert_cols = ["txn_id", "amount"]
+        country_col = next((c for c in ("country", "country_src", "country_dst") if c in enriched.columns), None)
+        if country_col:
+            alert_cols.append(country_col)
+        alerted = enriched.loc[enriched["rule_alert"], alert_cols]
+        if country_col and country_col != "country":
+            alerted = alerted.rename(columns={country_col: "country"})
+        output_cols = ["txn_id", "amount"]
+        if country_col:
+            output_cols.append("country")
     else:
-        if {"txn_id", "amount", "country"}.issubset(enriched.columns):
-            alerted = enriched.iloc[0:0][["txn_id", "amount", "country"]]
+        alert_cols = ["txn_id", "amount", "country"]
+        if set(alert_cols).issubset(enriched.columns):
+            alerted = enriched.iloc[0:0][alert_cols]
         else:
             alerted = pd.DataFrame(columns=["txn_id", "amount", "country"])
-    summary["alerted_transactions"] = _to_python_records(alerted, ["txn_id", "amount", "country"])
+        output_cols = ["txn_id", "amount", "country"]
+    summary["alerted_transactions"] = _to_python_records(alerted, output_cols)
 
     feedback_summary = learn.load_feedback_summary(feedback_path)
     if feedback_summary:
